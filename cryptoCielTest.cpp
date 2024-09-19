@@ -5,13 +5,32 @@
 #include "RsaGestion.h"
 #include "Hashgestion.h"
 #include "AesGestion.h"
+#include <fstream>
 
 int main()
 {
 	HashGestion LM;
-	std::string monMessageHash = "Super message superchouette";
-	std::cout << LM.CalculateSHA256(monMessageHash) << std::endl;
+	std::string File = "test.txt";
+	std::cout << LM.CalculateFileSHA256(File) << std::endl;
+	
 
+
+	AesGestion Cia;
+	Cia.GenerateAESKey();
+	Cia.SaveAESKeyToFile("Cia_code.key");
+	Cia.EncryptFileAES256("test.txt", "testencrypt.txt");
+	Cia.DecryptFileAES256("testencrypt.txt", "testdecrypt.txt");
+
+	RsaGestion Fbi;
+	Fbi.generationClef("clef_pub.pem", "clef_pr.pem",2048);
+	Fbi.chargementClefsPrive("clef_pr.pem");
+	Fbi.chargementClefsPublic("clef_pub.pem");
+	Fbi.chiffreDansFichier("message", "test1.txt");
+	
+	std::string micode = "test1.txt";
+	std::cout << Fbi.dechiffreFichier(micode) << std::endl;
+	
+
+	return 0;
+	
 }
-
-
