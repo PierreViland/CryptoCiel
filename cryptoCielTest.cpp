@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "RsaGestion.h"
-#include "Hashgestion.h"
+#include "HashGestion.h"
 #include "AesGestion.h"
 
 int main()
