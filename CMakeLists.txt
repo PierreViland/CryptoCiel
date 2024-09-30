@@ -2,22 +2,33 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Nom du projet
-project(CryptoCIEL)
+project(CryptoLibrary)
 
-# Définir les répertoires de source, objets, et bibliothèque
-set(SRCDIR .)
-#set(CRYPTOPP_DIR "./../../cryptopp/")
-# Créer la liste des fichiers sources
-file(GLOB SOURCES "${SRCDIR}/*.cpp")
+# Définir les répertoires des sources
+set(SRCDIR .)  # Assurez-vous que les fichiers .cpp et .h se trouvent dans ce répertoire
 
-# Créer l'exécutable
-add_executable(testCryptoCiel ${SOURCES})
+# Définir le répertoire pour la bibliothèque cryptopp
+set(CRYPTOPP_DIR "./../cryptopp")
 
-# Ajouter le répertoire contenant les fichiers d'en-tête (si besoin)
-target_include_directories(testCryptoCiel  PRIVATE ./../cryptopp/)
+# Ajouter le répertoire contenant les fichiers d'en-tête
+include_directories(${CRYPTOPP_DIR})
 
-# Lier la bibliothèque statique 'malib' qui se trouve dans ./Cryp
-target_link_directories(testCryptoCiel PRIVATE ./../cryptopp)
-# Ajouter une commande personnalisée pour afficher le répertoire courant
+# Lier la bibliothèque cryptopp
+link_directories(${CRYPTOPP_DIR})
 
-target_link_libraries(testCryptoCiel PRIVATE cryptopp)
+# Créer la bibliothèque statique
+add_library(CryptoCIEL STATIC
+    ${SRCDIR}/AesGestion.cpp
+    ${SRCDIR}/RsaGestion.cpp
+    ${SRCDIR}/HashGestion.cpp
+)
+
+# Spécifier les fichiers d'en-tête pour la bibliothèque
+target_include_directories(CryptoCIEL PUBLIC
+    ${SRCDIR}        # Inclure les fichiers d'en-tête de la bibliothèque
+    ${CRYPTOPP_DIR}  # Inclure les fichiers d'en-tête de cryptopp
+)
+
+# Lier la bibliothèque cryptopp à la bibliothèque CryptoLib
+target_link_libraries(CryptoCIEL PRIVATE cryptopp)
+
